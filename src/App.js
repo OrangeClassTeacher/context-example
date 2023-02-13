@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
+import logo from "./logo.svg";
+import "./App.css";
+// import MyApp from "./App1";
+import { ThemeContext, CurrentUserContext } from "./context";
+import UserInfo from "./components/UserInfo";
+import Main from "./components/Main";
+import { useState } from "react";
+import Header from "./components/Header";
+import NewsList from "./components/NewsList";
+import Search from "./components/Search";
 function App() {
+  const [theme, setTheme] = useState("bg-dark");
+  const [currentUser, setCurrentUser] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeContext.Provider value={theme}>
+      <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <Header />
+        <Main>
+          <div>
+            <UserInfo />
+          </div>
+          <Search />
+          <NewsList />
+          <div className="m-3 d-flex align-items-center">
+            <input
+              type={"checkbox"}
+              className="form-check"
+              name="switchTheme"
+              checked={theme == "bg-dark"}
+              value={theme}
+              onChange={(e) => {
+                setTheme(e.target.checked ? "bg-dark" : "bg-light");
+              }}
+            />
+            <label htmlFor="switchTheme" className="form-label">
+              Dark mode
+            </label>
+          </div>
+        </Main>
+      </CurrentUserContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 
